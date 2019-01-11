@@ -1,0 +1,82 @@
+#!/usr/bin/env bash
+version="0.1.0"
+#
+# Copyright (c) 2019  Érik Martin-Dorel
+#
+# Licensed under BSD-3 <https://opensource.org/licenses/BSD-3-Clause>
+#
+# Report bugs to: https://github.com/erikmd/autosetup-tapfa/issues
+
+die_hard() {
+    printf "%b\n" "$*" >&2
+    exit 1
+}
+
+warn() {
+    printf "%b\n" "$*" >&2
+}
+
+check_windows() {
+    [ "$(uname -s)" = "Linux" ] || die_hard "Erreur: ce script est conçu pour Linux uniquement."
+}
+
+installed() {
+    local prog
+    local name
+    prog="$1"
+    name="$2"
+    if command -v "$prog"; then
+        warn "=> $name détecté"
+    else
+        die_hard "Erreur : $name non installé"
+    fi
+}
+
+check_emacs24() {
+    local ver
+    installed emacs "GNU Emacs"
+    ver=$(emacs --version | head -n1 | sed -e 's/^[^0-9.]*\([0-9.]\+\)[^0-9.]*$/\1/')
+    warn "emacs --version = $ver"
+    if [ "$(head -n1 <(sort -V <<<$'24.3\n'"$ver"))" = "24.3" ]; then
+        warn "=> emacs OK (version >= 24.3)"
+    else
+        die_hard "Erreur : emacs >= 24.3 nécessaire"
+    fi
+}
+
+check_opam2() {
+    local ver
+    installed opam "opam"
+    ver=$(opam --version)
+    warn "opam --version = $ver"
+    if [[ $ver =~ ^"2.0" ]]; then
+         warn "=> opam OK (version 2.0.x)"
+    else
+        die_hard "Erreur : opam 2.0.x nécessaire"
+    fi
+}
+
+main () {
+    local ini
+    check_windows
+    check_emacs24
+    check_opam2
+    set -ex
+    opam init --auto-setup --yes --compiler=ocaml-base-compiler.4.05.0
+    eval $(opam env)
+    # opam switch create 4.05.0 # déjà OK avec init
+    # eval $(opam env)
+    opam install -y merlin
+    # opam install coq.8.8.2 # déjà OK en salle de TP
+    cd
+    ini="$HOME/.emacs"
+    if [ -e "$ini" ]; then
+        : sauvegarde de "$ini"
+        mv "$ini" "$ini~"
+    fi
+    curl -OL https://github.com/erikmd/tapfa-init.el/raw/master/.emacs
+    emacs &
+    : configuration de Merlin OK
+}
+
+main "$@"
