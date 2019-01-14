@@ -88,7 +88,7 @@ main () {
 	    echo "*** Ligne 'opam_tapfa || true' supprimée de votre  ~/.bashrc"
 	    echo "*** Veuillez relancer votre terminal pour prendre en compte"
 	    echo "*** le nouveau ~/.bashrc, puis relancer autosetup-tapfa."
-	    exit 1
+	    exit 0
 	fi
 	[ -z "$OPAMROOT" ] || { echo "Erreur: OPAMROOT défini. Relancer le terminal."; exit 1; }
 	set -ex
@@ -133,6 +133,7 @@ opam_tapfa || true
 EOF
 	    echo "*** Veuillez relancer votre terminal pour prendre en compte"
 	    echo "*** le nouveau ~/.bashrc, puis relancer autosetup-tapfa."
+            exit 0
 	fi
 	[ -n "$OPAMROOT" ] || { echo "Erreur: OPAMROOT non défini. Relancer le terminal."; exit 1; }
 
