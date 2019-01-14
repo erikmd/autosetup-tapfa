@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-version="0.1.0"
+version="0.2.0"
 #
 # Copyright (c) 2019  Érik Martin-Dorel
 #
@@ -56,27 +56,95 @@ check_opam2() {
     fi
 }
 
+question() {
+    local prompt
+cat <<EOF
+Voulez-vous suivre la procédure d'installation la plus robuste
+(création d'un dossier ~/.opam personnel) ou la plus rapide
+(utilisation d'OPAMROOT dans ~/Doc_Partages/opam-tapfa) ?
+EOF
+    select prompt in Robuste Rapide; do
+	case "$prompt" in
+	    'Robuste') return 0; break;;
+	    'Rapide') return 1; break;;
+	    *) echo 'Saisie incorrecte. Recommencez :'; continue;;
+	esac
+    done
+    if [ -z "$prompt" ]; then
+	echo 'Saisie interrompue.'
+	exit 1
+    fi
+}
+
 main () {
     local ini
     check_windows
     check_emacs24
     check_opam2
-    set -ex
-    opam init --auto-setup --yes --compiler=ocaml-base-compiler.4.05.0
-    eval $(opam env)
-    # opam switch create 4.05.0 # déjà OK avec init
-    # eval $(opam env)
-    opam install -y merlin
-    # opam install coq.8.8.2 # déjà OK en salle de TP
-    cd
-    ini="$HOME/.emacs"
-    if [ -e "$ini" ]; then
-        : sauvegarde de "$ini"
-        mv "$ini" "$ini~"
+    if question; then
+	if grep -q -e "opam_tapfa || true" ~/.bashrc; then
+	    sed -i.old -e 's/opam_tapfa || true//' ~/.bashrc
+	    diff -u0 -- ~/.bashrc.old ~/.bashrc
+	    echo "*** Ligne 'opam_tapfa || true' supprimée de votre  ~/.bashrc"
+	    echo "*** Veuillez relancer votre terminal pour prendre en compte"
+	    echo "*** le nouveau ~/.bashrc, puis relancer autosetup-tapfa."
+	    exit 1
+	fi
+	[ -z "$OPAMROOT" ] || { echo "Erreur: OPAMROOT défini. Relancer le terminal."; exit 1; }
+	set -ex
+	opam init --auto-setup --yes --compiler=ocaml-base-compiler.4.05.0
+	eval $(opam env)
+	# opam switch create 4.05.0 # déjà OK avec init
+	# eval $(opam env)
+	opam install -y merlin
+	# opam install coq.8.8.2 # déjà OK en salle de TP
+	cd
+	ini="$HOME/.emacs"
+	if [ -e "$ini" ]; then
+            : sauvegarde de "$ini"
+            mv "$ini" "$ini~"
+	fi
+	curl -OL https://github.com/erikmd/tapfa-init.el/raw/master/.emacs
+	emacs &
+	: configuration de Merlin OK
+    else
+	if grep -e "opam_tapfa()" ~/.bashrc; then
+	    echo "# déjà ajouté dans ~/.bashrc"
+	    echo "}"
+	else
+	    echo "# Ajout de opam_tapfa()"
+	    cat >> ~/.bashrc <<EOF
+opam_tapfa() {
+    export OPAMROOT=/tmp/opam-tapfa
+    if [ ! -d "$OPAMROOT" ]; then
+	ln -sv "$(readlink -f "$HOME/Doc_Partages/opam-tapfa")" "$OPAMROOT"
+    else
+	echo "$OPAMROOT => OK"
     fi
-    curl -OL https://github.com/erikmd/tapfa-init.el/raw/master/.emacs
-    emacs &
-    : configuration de Merlin OK
+}
+EOF
+	fi
+	if grep -e "opam_tapfa || true" ~/.bashrc; then
+	    echo "# déjà ajouté dans ~/.bashrc"
+	else
+	    echo "# Ajout de opam_tapfa || true"
+	    cat >> ~/.bashrc <<EOF
+opam_tapfa || true
+EOF
+	    echo "*** Veuillez relancer votre terminal pour prendre en compte"
+	    echo "*** le nouveau ~/.bashrc, puis relancer autosetup-tapfa."
+	fi
+	[ -n "$OPAMROOT" ] || { echo "Erreur: OPAMROOT non défini. Relancer le terminal."; exit 1; }
+
+	ini="$HOME/.emacs"
+	if [ -e "$ini" ]; then
+            : sauvegarde de "$ini"
+            mv "$ini" "$ini~"
+	fi
+	curl -OL https://github.com/erikmd/tapfa-init.el/raw/master/.emacs
+	emacs &
+	: configuration terminée
+    fi
 }
 
 main "$@"
