@@ -60,8 +60,8 @@ question() {
     local prompt
 cat <<EOF
 Voulez-vous suivre la procédure d'installation la plus robuste
-(création d'un dossier ~/.opam personnel) ou la plus rapide
-(utilisation d'OPAMROOT dans ~/Doc_Partages/opam-tapfa) ?
+(création d'un dossier ~/.opam personnel) ou bien la plus rapide
+(utilisation d'OPAMROOT=/tmp/opam-tapfa -> ~/Doc_Partages/opam-tapfa) ?
 EOF
     select prompt in Robuste Rapide; do
 	case "$prompt" in
