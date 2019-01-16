@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-version="0.2.0"
+version="0.3.0"
 #
 # Copyright (c) 2019  Érik Martin-Dorel
 #
@@ -59,13 +59,13 @@ check_opam2() {
 question() {
     local prompt
 cat <<EOF
-Voulez-vous suivre la procédure d'installation la plus robuste
+Voulez-vous suivre la procédure d'installation la plus "standard"
 (création d'un dossier ~/.opam personnel) ou bien la plus rapide
-(utilisation d'OPAMROOT=/tmp/opam-tapfa -> ~/Doc_Partages/opam-tapfa) ?
+(utilisation d'OPAMROOT=/tmp/opam-tapfa, solution recommandée) ?
 EOF
-    select prompt in Robuste Rapide; do
+    select prompt in Standard Rapide; do
 	case "$prompt" in
-	    'Robuste') return 0; break;;
+	    'Standard') return 0; break;;
 	    'Rapide') return 1; break;;
 	    *) echo 'Saisie incorrecte. Recommencez :'; continue;;
 	esac
@@ -117,7 +117,7 @@ main () {
 opam_tapfa() {
     export OPAMROOT=/tmp/opam-tapfa
     if [ ! -d "$OPAMROOT" ]; then
-	ln -sv "$(readlink -f "$HOME/Doc_Partages/opam-tapfa")" "$OPAMROOT"
+	ln -sv "$(readlink -f "/opt/EMD/opam-tapfa")" "$OPAMROOT"
     else
 	echo "$OPAMROOT => OK"
     fi
