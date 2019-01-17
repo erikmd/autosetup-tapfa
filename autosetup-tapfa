@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-version="0.3.0"
+version="0.3.1"
 #
 # Copyright (c) 2019  Érik Martin-Dorel
 #
@@ -116,10 +116,10 @@ main () {
 	    cat >> ~/.bashrc <<EOF
 opam_tapfa() {
     export OPAMROOT=/tmp/opam-tapfa
-    if [ ! -d "$OPAMROOT" ]; then
-	ln -sv "$(readlink -f "/opt/EMD/opam-tapfa")" "$OPAMROOT"
+    if [ ! -d "\$OPAMROOT" ]; then
+	ln -sv "\$(readlink -f "/opt/EMD/opam-tapfa")" "\$OPAMROOT"
     else
-	echo "$OPAMROOT => OK"
+	echo "\$OPAMROOT => OK"
     fi
 }
 EOF
