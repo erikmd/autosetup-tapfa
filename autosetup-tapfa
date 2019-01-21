@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-version="0.3.1"
+version="0.3.2"
 #
 # Copyright (c) 2019  Érik Martin-Dorel
 #
@@ -137,6 +137,7 @@ EOF
 	fi
 	[ -n "$OPAMROOT" ] || { echo "Erreur: OPAMROOT non défini. Relancer le terminal."; exit 1; }
 
+        cd
 	ini="$HOME/.emacs"
 	if [ -e "$ini" ]; then
             : sauvegarde de "$ini"
