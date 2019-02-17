@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-version="0.3.2"
+version="0.3.3"
 #
 # Copyright (c) 2019  Érik Martin-Dorel
 #
@@ -37,10 +37,10 @@ check_emacs24() {
     installed emacs "GNU Emacs"
     ver=$(emacs --version | head -n1 | sed -e 's/^[^0-9.]*\([0-9.]\+\)[^0-9.]*$/\1/')
     warn "emacs --version = $ver"
-    if [ "$(head -n1 <(sort -V <<<$'24.3\n'"$ver"))" = "24.3" ]; then
-        warn "=> emacs OK (version >= 24.3)"
+    if [ "$(head -n1 <(sort -V <<<$'24.4\n'"$ver"))" = "24.4" ]; then
+        warn "=> emacs OK (version >= 24.4)"
     else
-        die_hard "Erreur : emacs >= 24.3 nécessaire"
+        die_hard "Erreur : emacs >= 24.4 nécessaire"
     fi
 }
 
