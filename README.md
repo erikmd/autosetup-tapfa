@@ -37,3 +37,6 @@ bash ./autosetup-tapfa
 
 * Vous pouvez maintenant créer ou ouvrir un fichier OCaml en tapant
    <kbd>C-x C-f tp1.ml RET</kbd>
+
+* Si nécessaire, vous pouvez aussi activer le mode
+  [learn-ocaml](https://github.com/pfitaxel/learn-ocaml.el#usage)
