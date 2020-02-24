@@ -32,15 +32,15 @@ installed() {
     fi
 }
 
-check_emacs24() {
+check_emacs25() {
     local ver
     installed emacs "GNU Emacs"
     ver=$(emacs --version | head -n1 | sed -e 's/^[^0-9.]*\([0-9.]\+\)[^0-9.]*$/\1/')
     warn "emacs --version = $ver"
-    if [ "$(head -n1 <(sort -V <<<$'24.4\n'"$ver"))" = "24.4" ]; then
-        warn "=> emacs OK (version >= 24.4)"
+    if [ "$(head -n1 <(sort -V <<<$'25.1\n'"$ver"))" = "25.1" ]; then
+        warn "=> emacs OK (version >= 25.1)"
     else
-        die_hard "Erreur : emacs >= 24.4 nécessaire"
+        die_hard "Erreur : emacs >= 25.1 nécessaire"
     fi
 }
 
@@ -62,7 +62,7 @@ cat <<EOF
 Quelle procédure d'installation voulez-vous lancer ?
 - solution recommandée, spécifique aux ordinateurs de l'UPS
   (avec OPAMROOT=/tmp/opam-tapfa)
-- solution générique, plus lente
+- solution générique, beaucoup plus lente
   (création d'un dossier ~/.opam)
 EOF
     select prompt in Recommandée-UPS Générique-Lente; do
@@ -81,7 +81,7 @@ EOF
 main () {
     local ini
     check_windows
-    check_emacs24
+    check_emacs25
     check_opam2
     if question; then
 	if grep -q -e "opam_tapfa || true" ~/.bashrc; then
@@ -98,8 +98,8 @@ main () {
 	eval $(opam env)
 	# opam switch create 4.05.0 # déjà OK avec init
 	# eval $(opam env)
-	opam install -y merlin
-	# opam install coq.8.8.2 # déjà OK en salle de TP
+	opam install -y merlin utop learn-ocaml-client
+	opam install -y coq.8.11
 	cd
 	ini="$HOME/.emacs"
 	if [ -e "$ini" ]; then
@@ -120,6 +120,7 @@ opam_tapfa() {
     export OPAMROOT=/tmp/opam-tapfa
     if [ ! -d "\$OPAMROOT" ]; then
 	ln -sv "\$(readlink -f "/opt/EMD/opam-tapfa")" "\$OPAMROOT"
+        eval $(opam env)
     else
 	echo "\$OPAMROOT => OK"
     fi
