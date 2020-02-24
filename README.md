@@ -36,7 +36,10 @@ bash ./autosetup-tapfa
 * Emacs devrait alors se lancer et se configurer automatiquement
 
 * Vous pouvez maintenant créer ou ouvrir un fichier OCaml en tapant
-   <kbd>C-x C-f tp1.ml RET</kbd>
+  <kbd>C-x C-f tp1.ml RET</kbd> (c'est-à-dire <kbd>Ctrl+X Ctrl+F</kbd>
+  `tp1.ml` <kbd>Entrée</kbd>)
 
 * Si nécessaire, vous pouvez aussi activer le mode
   [learn-ocaml](https://github.com/pfitaxel/learn-ocaml.el#usage)
+  en tapant <kbd>M-x learn-ocaml-mode RET</kbd> (c'est-à-dire
+  <kbd>Alt+X</kbd> `learn-ocaml-mode` <kbd>Entrée</kbd>)
