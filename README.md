@@ -14,11 +14,26 @@ https://github.com/erikmd/tapfa-init.el
 
 ## Installation
 
-Exécuter dans un terminal :
+* Ouvrir un terminal et exécuter :
 
 ```
 curl -OL https://github.com/erikmd/autosetup-tapfa/raw/master/autosetup-tapfa
 bash ./autosetup-tapfa
 ```
 
-Suivre les instructions (en choisissant l'option `Recommandée-UPS`).
+Suivre les instructions, en particulier :
+
+* Choisir l'option `Recommandée-UPS`
+
+* Relancer le terminal et ré-exécuter une seconde fois :
+
+```
+bash ./autosetup-tapfa
+```
+
+* Choisir l'option `Recommandée-UPS`
+
+* Emacs devrait alors se lancer et se configurer automatiquement
+
+* Vous pouvez maintenant créer ou ouvrir un fichier OCaml en tapant
+   <kbd>C-x C-f tp1.ml RET</kbd>
