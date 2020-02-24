@@ -107,6 +107,7 @@ main () {
             mv "$ini" "$ini~"
 	fi
 	curl -OL https://github.com/erikmd/tapfa-init.el/raw/master/.emacs
+        sed -i -e "s/(setq tuareg-opam-insinuate t)/(setq tuareg-opam-insinuate nil)/" "$ini"
 	emacs &
 	: configuration de Merlin OK
     else
@@ -147,6 +148,7 @@ EOF
             mv "$ini" "$ini~"
 	fi
 	curl -OL https://github.com/erikmd/tapfa-init.el/raw/master/.emacs
+        sed -i -e "s/(setq tuareg-opam-insinuate t)/(setq tuareg-opam-insinuate nil)/" "$ini"
 	emacs &
 	: configuration terminée
     fi
