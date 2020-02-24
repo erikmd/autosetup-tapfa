@@ -120,7 +120,7 @@ opam_tapfa() {
     export OPAMROOT=/tmp/opam-tapfa
     if [ ! -d "\$OPAMROOT" ]; then
 	ln -sv "\$(readlink -f "/opt/EMD/opam-tapfa")" "\$OPAMROOT"
-        eval $(opam env)
+        eval \$(opam env)
     else
 	echo "\$OPAMROOT => OK"
     fi
