@@ -35,9 +35,11 @@ bash ./autosetup-tapfa
 
 * Emacs devrait alors se lancer et se configurer automatiquement
 
-* Vous pouvez maintenant créer ou ouvrir un fichier OCaml en tapant
-  <kbd>C-x C-f tp1.ml RET</kbd> (c'est-à-dire <kbd>Ctrl+X Ctrl+F</kbd>
-  `tp1.ml` <kbd>Entrée</kbd>)
+* Vous pouvez maintenant créer ou ouvrir un fichier Coq en tapant
+  <kbd>C-x C-f tp1.v RET</kbd> (c'est-à-dire <kbd>Ctrl+X Ctrl+F</kbd>
+  `tp1.v` <kbd>Entrée</kbd>).
+  
+* Pour créer ou ouvrir un fichier OCaml : <kbd>C-x C-f tp1.ml RET</kbd>.
 
 * Si nécessaire, vous pouvez aussi activer le mode
   [learn-ocaml](https://github.com/pfitaxel/learn-ocaml.el#usage)
